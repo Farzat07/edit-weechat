@@ -1,4 +1,4 @@
-# edit-weechat
+# weechat-edit
 
 This simple [weechat](https://weechat.org/) plugin allows you to
 compose messages in your `$EDITOR`, optionally with a file type.
@@ -35,9 +35,10 @@ environment variable, you can set it in weechat.
 
 # Installation
 
-Copy the script to `~/.weechat/python/autoload`
+Copy the script to $XDG_DATA_HOME/weechat/python/autoload,
+~/.local/share/weechat/python/autoload, or `~/.weechat/python/autoload`
 
-```
-mkdir -p ~/.weechat/python/autoload
-wget https://raw.githubusercontent.com/keith/edit-weechat/master/edit.py ~/.weechat/python/autoload
+```sh
+mkdir -p "$XDG_DATA_HOME/weechat/python/autoload"
+wget https://gitlab.farzat.xyz/plugins/weechat/weechat-edit/-/raw/master/edit.py "$XDG_DATA_HOME/weechat/python/autoload"
 ```
