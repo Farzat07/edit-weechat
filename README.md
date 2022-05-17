@@ -35,8 +35,8 @@ environment variable, you can set it in weechat.
 
 # Installation
 
-Copy the script to $XDG_DATA_HOME/weechat/python/autoload,
-~/.local/share/weechat/python/autoload, or `~/.weechat/python/autoload`
+Copy the script to `$XDG_DATA_HOME/weechat/python/autoload`,
+`~/.local/share/weechat/python/autoload`, or `~/.weechat/python/autoload`
 
 ```sh
 mkdir -p "$XDG_DATA_HOME/weechat/python/autoload"
