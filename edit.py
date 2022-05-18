@@ -10,7 +10,10 @@
 # /set plugins.var.python.edit.run_externally "false"
 #
 # History:
-# 10-18-2015
+# 2022-05-18
+# Version 1.1.0: Use XDG Base Dir, support extension and fences, make editor
+#                and terminal options more flexible, and small fixes
+# 2015-10-18
 # Version 1.0.2: Add the ability to run the editor in a external terminal
 # Version 1.0.1: Add configurable editor key
 # Version 1.0.0: initial release
@@ -160,7 +163,7 @@ def main():
     if not weechat.register(
         "edit",
         "A Farzat",
-        "1.0.0",
+        "1.1.0",
         "MIT",
         "Open your $EDITOR to compose a message",
         "",
