@@ -25,15 +25,18 @@ import weechat
 SETTINGS = {
     "editor": (
         "",
-        "The editor command. You can customize by inserting the \{\} "
-        "placeholder in place of the filename."),
+        "The editor command. You can customize by inserting the {} "
+        "placeholder in place of the filename.",
+    ),
     "terminal": (
         "",
-        "The terminal command. You can customize by inserting the \{\} "
-        "placeholder in place of the editor command."),
+        "The terminal command. You can customize by inserting the {} "
+        "placeholder in place of the editor command.",
+    ),
     "run_externally": (
         "off",
-        "Run the editor externallly (using the terminal command)."),
+        "Run the editor externallly (using the terminal command).",
+    ),
 }
 
 FILE = ""
@@ -56,10 +59,7 @@ def editor_process_cb(data, command, return_code, out, err):
 
     if return_code != 0:
         cleanup(buf)
-        weechat.prnt("", "{}: {}".format(
-            err.strip(),
-            return_code
-        ))
+        weechat.prnt("", "{}: {}".format(err.strip(), return_code))
         return weechat.WEECHAT_RC_ERROR
 
     if return_code == 0:
@@ -105,7 +105,7 @@ def hook_editor_process(terminal, editor, buf):
     if "{}" in terminal:
         command = terminal.format(editor_cmd)
     else:
-        command = "{} -e \"{}\"".format(terminal, editor_cmd)
+        command = '{} -e "{}"'.format(terminal, editor_cmd)
     weechat.hook_process(command, 0, "editor_process_cb", buf)
 
 
@@ -120,11 +120,11 @@ def run_blocking(editor, buf):
 
 
 def edit(data, buf, args, fenced=False):
-    editor = (weechat.config_get_plugin("editor")
-              or os.environ.get("EDITOR", "vim -f"))
+    editor = weechat.config_get_plugin("editor") or os.environ.get(
+        "EDITOR", "vim -f"
+    )
 
-    terminal = (weechat.config_get_plugin("terminal")
-                or os.getenv("TERMCMD"))
+    terminal = weechat.config_get_plugin("terminal") or os.getenv("TERMCMD")
 
     terminal = terminal or "xterm"
 
@@ -135,7 +135,9 @@ def edit(data, buf, args, fenced=False):
 
     global FILE, FENCED
 
-    FILE = os.path.join(weechat_cache_dir(), "message." + ("md" if not args else args))
+    FILE = os.path.join(
+        weechat_cache_dir(), "message." + ("md" if not args else args)
+    )
 
     FENCED = fenced
 
@@ -155,28 +157,45 @@ def fenced(data, buf, args):
 
 
 def main():
-    if not weechat.register("edit", "A Farzat", "1.0.0", "MIT",
-                            "Open your $EDITOR to compose a message", "", ""):
+    if not weechat.register(
+        "edit",
+        "A Farzat",
+        "1.0.0",
+        "MIT",
+        "Open your $EDITOR to compose a message",
+        "",
+        "",
+    ):
         return weechat.WEECHAT_RC_ERROR
 
     # set default settings
-    version = weechat.info_get('version_number', '') or 0
+    version = weechat.info_get("version_number", "") or 0
     for option, value in SETTINGS.items():
         if not weechat.config_is_set_plugin(option):
             weechat.config_set_plugin(option, value[0])
         if int(version) >= 0x00030500:
             weechat.config_set_desc_plugin(
-                option, '%s (default: "%s")' % (value[1], value[0]))
+                option, '%s (default: "%s")' % (value[1], value[0])
+            )
 
-    weechat.hook_command("edit", "Open your $EDITOR to compose a message",
-                         "[extension]",
-                         "extension: extension for temporary composing file",
-                         "extension", "edit", "")
-    weechat.hook_command("fenced", "Open your $EDITOR to compose a message"
-                                   " with automatic code fences",
-                         "[extension]",
-                         "extension: extension for temporary composing file",
-                         "extension", "fenced", "")
+    weechat.hook_command(
+        "edit",
+        "Open your $EDITOR to compose a message",
+        "[extension]",
+        "extension: extension for temporary composing file",
+        "extension",
+        "edit",
+        "",
+    )
+    weechat.hook_command(
+        "fenced",
+        "Open your $EDITOR to compose a message" " with automatic code fences",
+        "[extension]",
+        "extension: extension for temporary composing file",
+        "extension",
+        "fenced",
+        "",
+    )
 
 
 if __name__ == "__main__":
