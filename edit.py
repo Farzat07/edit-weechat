@@ -83,12 +83,15 @@ def read_file(buf):
 
 
 def hook_editor_process(terminal, editor, buf):
-    term_cmd = "{} -e".format(terminal)
-    editor_cmd = "{} {}".format(editor, FILE)
-    weechat.hook_process("{} \"{}\"".format(
-        term_cmd,
-        editor_cmd
-    ), 0, "editor_process_cb", buf)
+    if "{}" in editor:
+        editor_cmd = editor.format(FILE)
+    else:
+        editor_cmd = "{} {}".format(editor, FILE)
+    if "{}" in terminal:
+        command = terminal.format(editor_cmd)
+    else:
+        command = "{} -e \"{}\"".format(terminal, editor_cmd)
+    weechat.hook_process(command, 0, "editor_process_cb", buf)
 
 
 def run_blocking(editor, buf):
