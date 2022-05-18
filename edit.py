@@ -68,7 +68,7 @@ def read_file(buf):
         with open(FILE) as f:
             text = f.read()
 
-        if text[-1] == "\n":
+        if text and text[-1] == "\n":
             text = text[:-1]  # remove trailing newline if exists.
         if FENCED:
             text = "```\n" + text + "\n```"
