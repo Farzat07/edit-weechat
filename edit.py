@@ -21,6 +21,21 @@ import shlex
 import subprocess
 import weechat
 
+# script options
+SETTINGS = {
+    "editor": (
+        "",
+        "The editor command. You can customize by inserting the \{\} "
+        "placeholder in place of the filename."),
+    "terminal": (
+        "",
+        "The terminal command. You can customize by inserting the \{\} "
+        "placeholder in place of the editor command."),
+    "run_externally": (
+        "off",
+        "Run the editor externallly (using the terminal command)."),
+}
+
 FILE = ""
 FENCED = False
 
@@ -143,6 +158,15 @@ def main():
     if not weechat.register("edit", "A Farzat", "1.0.0", "MIT",
                             "Open your $EDITOR to compose a message", "", ""):
         return weechat.WEECHAT_RC_ERROR
+
+    # set default settings
+    version = weechat.info_get('version_number', '') or 0
+    for option, value in SETTINGS.items():
+        if not weechat.config_is_set_plugin(option):
+            weechat.config_set_plugin(option, value[0])
+        if int(version) >= 0x00030500:
+            weechat.config_set_desc_plugin(
+                option, '%s (default: "%s")' % (value[1], value[0]))
 
     weechat.hook_command("edit", "Open your $EDITOR to compose a message",
                          "[extension]",
