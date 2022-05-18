@@ -140,7 +140,7 @@ def fenced(data, buf, args):
 
 
 def main():
-    if not weechat.register("edit", "Keith Smiley", "1.0.0", "MIT",
+    if not weechat.register("edit", "A Farzat", "1.0.0", "MIT",
                             "Open your $EDITOR to compose a message", "", ""):
         return weechat.WEECHAT_RC_ERROR
 
